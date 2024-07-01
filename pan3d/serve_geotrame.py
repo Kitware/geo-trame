@@ -5,7 +5,7 @@ from pan3d.dataset_builder import DatasetBuilder
 def serve():
     parser = ArgumentParser(
         prog="Pan3D",
-        description="Launch the Pan3D Dataset Viewer",
+        description="Launch the Pan3D GeoTrame App",
     )
 
     parser.add_argument("--config_path")

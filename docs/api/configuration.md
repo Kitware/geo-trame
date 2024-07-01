@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Pan3D uses JSON files to save an application state for reuse. The UI and the API include access to import and export functions which read and write these configuration files, respectively. This documentation provides guidelines for reading and writing these files manually.
+Pan3D uses JSON files to save an application state for reuse. The GeoTrame UI and the Pan3D DatasetBuilder API include access to import and export functions which read and write these configuration files, respectively. This documentation provides guidelines for reading and writing these files manually.
 
 There are five sections available in the configuration file format: `data_origin`, `data_array`, `data_slices`, `ui`, and `render`. The values in these sections will be passed to various attributes on the current `DatasetBuilder` instance and, if applicable, the corresponding `DatasetViewer` instance state.
 
@@ -19,16 +19,8 @@ There are five sections available in the configuration file format: `data_origin
         "t_index": 5
     },
     "data_slices": {
-        "lat": [
-            -45,
-            45,
-            100
-        ],
-        "lon": [
-            -90,
-            90,
-            100
-        ]
+        "lon": [1000, 6000, 20],
+        "lat": [500, 3000, 20],
     },
     "ui": {
         "main_drawer": false,
@@ -77,9 +69,9 @@ The value for this key should be a mapping of coordinate names (which are likely
 
 Each slicing array should be a list of three values `[start, stop, step]`.
 
-`start`: the coordinate value at which the sliced data should start (inclusive)
+`start`: the index at which the sliced data should start (inclusive)
 
-`stop`: the coordinate value at which the sliced data should stop (exclusive)
+`stop`: the index at which the sliced data should stop (exclusive)
 
 `step`: an integer > 0 which represents the number of items to skip when slicing the data (e.g. step=2 represents 0.5 resolution)
 
@@ -89,7 +81,7 @@ The value for this key should be a mapping of any number of UI state values. The
 
 | Key | Required? | Type | Value Description |
 |-----|-----------|------|-------------------|
-|`main_drawer`|NO (default=True)|`bool`|If true, open the lefthand drawer for dataset and data array browsing/selection.|
+|`main_drawer`|NO (default=False)|`bool`|If true, open the lefthand drawer for dataset and data array browsing/selection.|
 |`axis_drawer`|NO (default=False)|`bool`|If true, open the righthand drawer for axis assignment/slicing. **Note:** By default, this becomes True when a data array is selected.|
 |`unapplied_changes`|NO (default=False)|`bool`|If true, show "Apply and Render" button, which when clicked will apply any unapplied changes and rerender.|
 |`error_message`|NO (default=None)|`str`|If not None, this string will show as the error message above the render area.|

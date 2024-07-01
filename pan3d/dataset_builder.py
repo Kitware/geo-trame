@@ -27,7 +27,7 @@ class DatasetBuilder:
         Parameters:
             dataset: A path or URL referencing a dataset readable by xarray.open_dataset()
             server: Trame server name or instance.
-            catalogs: A list of strings referencing available catalog modules (options include 'pangeo', 'esgf'). Each included catalog will be available to search in the Viewer UI.
+            catalogs: A list of strings referencing available catalog modules (options include 'pangeo', 'esgf'). Each included catalog will be available to search in the GeoTrame UI.
         """
         self._algorithm = PyVistaXarraySource()
         self._viewer = None
@@ -57,7 +57,7 @@ class DatasetBuilder:
 
     @property
     def viewer(self):
-        """Return the Pan3D DatasetViewer instance for this DatasetBuilder.
+        """Return the GeoTrame instance for this DatasetBuilder.
         If none exists, create a new one and synchronize state.
         """
         from pan3d.dataset_viewer import DatasetViewer

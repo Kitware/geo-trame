@@ -61,7 +61,7 @@ jobs:
         pip install .
         pip install -r tests/requirements.txt
         pytest -s ./tests/test_builder.py
-        pip install .[viewer]
+        pip install .[geotrame]
         pytest -s ./tests/test_viewer.py
       working-directory: .
 

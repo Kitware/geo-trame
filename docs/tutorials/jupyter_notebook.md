@@ -1,27 +1,27 @@
-# How to use Pan3D in a Jupyter Notebook
+# How to use Pan3D and GeoTrame in a Jupyter Notebook
 
 Running Pan3D in a Jupyter notebook allows data scientists to incorporate the tool into their existing workflows and can facilitate greater collaboration between teammates. This tutorial assumes you have a running Jupyter notebook. You can find examples at [notebook examples][notebook-examples-link] in the Pan3D code repository. You can run these examples on Binder [here][binder-link].
 
-![](../images/14.png)
+![](../images/20.png)
 
 1. In your current kernel, install Pan3D:
 
-        pip install pan3d[viewer]
+        pip install pan3d[all]
 
-2. In the first cell of your notebook, initialize Pan3D’s DatasetBuilder and viewer.
+2. In the first cell of your notebook, initialize Pan3D’s DatasetBuilder and GeoTrame.
 
         from pan3d import DatasetBuilder
         builder = DatasetBuilder()
-        viewer = builder.viewer
+        geotrame = builder.viewer
 
-3. Prepare a configuration for the builder to import. This can come from a previously exported configuration file from Pan3D. An example of this is shown in [`example_config_xarray.json`][config-xarray-link]:
+3. Prepare a configuration for the builder to import. This can come from a previously exported Pan3D configuration file. An example of this is shown in [`example_config_xarray.json`][config-xarray-link]:
 
         from pan3d import DatasetBuilder
         config_path = '../example_config_xarray.json'
         builder = DatasetBuilder()
         builder.import_config(config_path)
 
-4. You can alternatively create a configuration dictionary. See [`pangeo_forge.ipynb`][pangeo-forge-notebook-link] for an example of this:
+4. You can alternatively create a configuration dictionary. See [`url_config.ipynb`][url-config-notebook-link] for an example of this:
 
         from pan3d import DatasetBuilder
         config = {
@@ -33,8 +33,8 @@ Running Pan3D in a Jupyter notebook allows data scientists to incorporate the to
                 't': 'time',
             },
             'data_slices': {
-                'lat': [-90, 90, 50],
-                'lon': [-180, 180, 50]
+                'lon': [1000, 6000, 20],
+                'lat': [500, 3000, 20],
             },
         }
         builder = DatasetBuilder()
@@ -51,16 +51,16 @@ Running Pan3D in a Jupyter notebook allows data scientists to incorporate the to
         builder.t = 'second'
         builder.t_index = 2
 
-6. After configuring the builder instance, you can show the Pan3D viewer as cell output.
+6. After configuring the builder instance, you can show GeoTrame as cell output.
 
-        viewer = builder.viewer
-        await viewer.ready
-        viewer.ui
+        geotrame = builder.viewer
+        await geotrame.ready
+        geotrame.ui
 
-7. If you’d like to do more advanced rendering than the Pan3D viewer allows, you can still use the DatasetBuilder class for mesh preparation. You can access the mesh with `builder.mesh` and use it in a PyVista rendering pipeline. Refer to `advanced_pyvista_rendering.ipynb` for an example of this technique, which leverages PyVista plotting to generate an animated GIF of timesteps in the dataset.
+7. If you’d like to do more advanced rendering than GeoTrame allows, you can still use the DatasetBuilder class for mesh preparation. You can access the mesh with `builder.mesh` and use it in a PyVista rendering pipeline. Refer to `advanced_pyvista_rendering.ipynb` for an example of this technique, which leverages PyVista plotting to generate an animated GIF of timesteps in the dataset.
 
 
 [notebook-examples-link]: https://github.com/Kitware/pan3d/tree/main/examples/jupyter
 [binder-link]: https://mybinder.org/v2/gh/Kitware/pan3d/main?labpath=examples%2Fjupyter
 [config-xarray-link]: https://github.com/Kitware/pan3d/blob/main/examples/example_config_xarray.json
-[pangeo-forge-notebook-link]: https://github.com/Kitware/pan3d/blob/main/examples/jupyter/pangeo_forge.ipynb
+[url-config-notebook-link]: https://github.com/Kitware/pan3d/blob/main/examples/jupyter/url_config.ipynb

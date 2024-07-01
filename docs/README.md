@@ -10,6 +10,8 @@
 
 Pan3D aims to be an utility package for viewing and processing a wide variety of multidimensional datasets. Any dataset that can be interpreted with [xarray][xarray-link] can be explored and rendered with Pan3D.
 
+GeoTrame is a Pan3D application focused on geospatial rendering use cases. This is a graphical user interface leveraging the Pan3D infrastructure to help geospatial scientists explore data.
+
 ![](images/0.png)
 
 For an introduction to this project, check out our [blog post][blog-post-link].
@@ -17,13 +19,17 @@ For an introduction to this project, check out our [blog post][blog-post-link].
 
 ## Installation
 
-To install requirements for the DatasetBuilder class only:
+**Recommended**: To install all requirements, including optional packages:
+
+    pip install pan3d[all]
+
+To install requirements for the Pan3D DatasetBuilder class only:
 
     pip install pan3d
 
-To install requirements for the DatasetViewer user interface:
+To install requirements for the GeoTrame user interface:
 
-    pip install pan3d[viewer]
+    pip install pan3d[geotrame]
 
 **Optional**: to install requirements for Pangeo and ESGF catalogs, respectively:
 
@@ -31,50 +37,47 @@ To install requirements for the DatasetViewer user interface:
 
     pip install pan3d[esgf]
 
-**Recommended**: To install all requirements, including optional packages:
-
-    pip install pan3d[all]
-
 ## Quick Start
 
-`pan3d-viewer` is the main entrypoint for launching Pan3D locally. Below are some example usages.
+`geotrame` is the main entrypoint for launching GeoTrame locally. Below are some example usages.
 
-To launch Pan3D without a target dataset to browse XArray examples:
+To launch GeoTrame without a target dataset to browse XArray examples:
 
-    pan3d-viewer
+    geotrame
 
-To launch Pan3D with a local path to a target dataset:
+To launch GeoTrame with a local path to a target dataset:
 
-    pan3d-viewer --dataset=/path/to/dataset.zarr
+    geotrame --dataset=/path/to/dataset.zarr
 
-To launch Pan3D with a remote URL to a target dataset:
+To launch GeoTrame with a remote URL to a target dataset:
 
-    pan3d-viewer --dataset=https://host.org/link/to/dataset.zarr
+    geotrame --dataset=https://host.org/link/to/dataset.zarr
 
-To launch Pan3D with a compatible configuration file (see [examples][examples-link]):
+To launch GeoTrame with a compatible configuration file (see [examples][examples-link]):
 
-    pan3d-viewer --config_path=/path/to/pan3d_state.json
+    geotrame --config_path=/path/to/pan3d_state.json
 
-To launch Pan3D with the option to browse the Pangeo and ESGF Dataset Catalogs:
+To launch GeoTrame with the option to browse the Pangeo and ESGF Dataset Catalogs (see [Catalogs Tutorial](tutorials/catalogs.md)):
 
-    pan3d-viewer --catalogs pangeo esgf
+    geotrame --catalogs pangeo esgf
 
 Or you may specify only one catalog:
 
-    pan3d-viewer --catalogs pangeo
+    geotrame --catalogs pangeo
 
-    pan3d-viewer --catalogs esgf
+    geotrame --catalogs esgf
 
 
-> The `pan3d-viewer` entrypoint will automatically launch your default browser to open `localhost:8080`.
+> The `geotrame` entrypoint will automatically launch your default browser to open `localhost:8080`.
 >
 > To launch without opening your browser, add the `--server` argument to your command.
 
 
 ## Tutorials
 
-- [How to use the Pan3D viewer](tutorials/dataset_viewer.md)
-- [Pan3D command line](tutorials/local_server.md)
+- [How to use GeoTrame](tutorials/dataset_viewer.md)
+- [GeoTrame command line](tutorials/command_line.md)
+- [Catalogs Tutorial](tutorials/catalogs.md)
 - [How to use Pan3D in a Jupyter notebook](tutorials/jupyter_notebook.md)
 
 ## Examples

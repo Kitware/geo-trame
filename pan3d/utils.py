@@ -41,7 +41,7 @@ XARRAY_EXAMPLES = [
 
 
 initial_state = {
-    "trame__title": "Pan3D Viewer",
+    "trame__title": "GeoTrame",
     "dataset_ready": False,
     "state_export": None,
     "available_catalogs": [],

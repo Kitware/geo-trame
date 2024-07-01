@@ -2,5 +2,5 @@
 CURRENT_DIR=`dirname "$0"`
 
 cd $CURRENT_DIR/../..
-docker build -t pan3d-viewer . -f docker/Dockerfile
+docker build -t geotrame . -f docker/Dockerfile
 cd -

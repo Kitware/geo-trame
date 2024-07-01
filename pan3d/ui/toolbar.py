@@ -32,7 +32,7 @@ class Toolbar(vuetify.VAppBar):
                     % ui_main_drawer
                 )
 
-            vuetify.VAppBarTitle("Pan3D Viewer")
+            vuetify.VAppBarTitle("GeoTrame")
             vuetify.VProgressLinear(
                 v_show=(ui_loading,),
                 indeterminate=True,

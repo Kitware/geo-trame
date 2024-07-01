@@ -1,4 +1,4 @@
-# Dataset Viewer Tutorial
+# GeoTrame Tutorial
 
 ## Introduction
 
@@ -8,27 +8,29 @@ For more information about this dataset, visit [the C3S Catalog](https://surfobs
 
 ## Get started
 
-To follow along this tutorial, install Pan3D.
+To follow along this tutorial, install Pan3D with GeoTrame enabled.
 
 ```
-pip install pan3d[viewer]
+pip install pan3d[geotrame]
 ```
 
-Run the viewer as a local python server with the following command.
+Run GeoTrame as a local python server with the following command.
 
 ```
-pan3d-viewer --dataset=https://ncsa.osn.xsede.org/Pangeo/pangeo-forge/pangeo-forge/EOBS-feedstock/eobs-tg-tn-tx-rr-hu-pp.zarr
+geotrame --dataset=https://ncsa.osn.xsede.org/Pangeo/pangeo-forge/pangeo-forge/EOBS-feedstock/eobs-tg-tn-tx-rr-hu-pp.zarr
 ```
 
-The Pan3D Viewer will open as a tab in your default browser. You can also visit `localhost:8080` in another browser.
+GeoTrame will open as a tab in your default browser. You can also visit `localhost:8080` in another browser.
 
  > **Note:** to prevent the behavior of opening a tab on startup, add `--server` to the above command to run server mode.
 
-## Using the Viewer
+ > **Note:** This tutorial also specifies a default render resolution of 2048 for higher quality images. You may specify a render resolution by adding `--resolution=[value]` to the above command. A higher resolution value will result in longer rendering times. If not specified, a default render resolution of 128 will be used for faster renders.
 
-#### Data configuration
+## Using the GeoTrame Viewer
 
-After a moment to load the data from the remote URL, the Viewer will render the default configuration of the target dataset. This dataset contains daily weather data recorded over the European continent between years 1950 and 2020. When the dataset first loads, Pan3D displays the first array ("hu") at the first time step (01-January-1950).
+#### Data selection
+
+After a moment to load the data from the remote URL, GeoTrame will render the default configuration of the target dataset. This dataset contains daily weather data recorded over the European continent between years 1950 and 2020. When the dataset first loads, GeoTrame displays the first array ("hu") at the first time step (01-January-1950).
 
 ![](../images/1.png)
 
@@ -39,64 +41,84 @@ You can open the left drawer by clicking on the dataset configuration icon in th
 
 Inside this panel, you will find the following information:
 
-- A group selection box. Its current value is "default". The only dataset in the default group is the one we passed as an argument. There is one more available group option in this selection box: the "xarray" group contains example Xarray datasets to explore. More groups can be added with the Catalog Search (See the [Catalog Search tutorial](tutorials/catalog_search.md) for details).
+- A group selection box. Its current value is "default". The only dataset in the default group is the one we passed as an argument. There is one more available group option in this selection box: the "xarray" group contains example Xarray datasets to explore. More groups can be added with the Catalog Search (See the [Catalog Search tutorial](catalogs.md) for details).
 - A dataset selection box. This selection box contains all the datasets available in the currently selected group. Its current value is the url we passed as an argument, which is the only dataset available in the default group.
 - A button to view the attributes of the current dataset. Click the three-dots icon next to "Attributes" to open a dialog table of metadata available on the dataset.
 
     ![](../images/3.png)
 
-- A list of arrays available in the dataset, each with a button to view its attributes. The arrays in this dataset are acronymns, so we can open the attributes tables to see the standard names. The first array ("hu") is mean relative humidity, and we can see the unit is percentage.
+- A list of arrays available in the dataset, each with a button to view its attributes. The arrays in this dataset are abbreviations, so we can open the attributes tables to see the standard names. The first array ("hu") is mean relative humidity, and we can see the unit is percentage.
 
     ![](../images/4.png)
 
-You can select any array from this list by clicking on the name. For this tutorial, we will continue with the the mean temperature data in the array called "tg".
+You can select any array from this list by clicking on the name. For this tutorial, we will continue with the the mean temperature data in the array called "tg". After a moment to load the new array, the rendering will update.
 
-When a new data array is selected, the axis drawer on the right will open for further data configuration. This drawer allows us to change the default axis assignments and slicing. This drawer can be toggled with the axis info icon in the top right corner.
+#### Data configuration
+
+After selecting the "tg" array on the EOBS dataset, we will open the axis drawer on the right for further data configuration. To toggle the visibility of this drawer, click on the axis info icon in the top right corner. The axis configuration drawer allows us to change the default axis assignments and slicing.
 
 By default, "longitude" is assigned to X, "latitude" is assigned to Y, and "time" is assigned to T. This data does not have a Z coordinate, so our rendered meshes are all planes. We will explore a dataset with a Z axis later.
 
 ![](../images/5.png)
 
-We can expand any of these coordinate panels. When we expand longitude, we see the following information
+We can expand any of these coordinate panels. When we expand longitude, we see the following information:
 
-- The attributes table of the coordinate. For longitude, the units are degrees east, and there are 705 values ranging from -24.95 to 45.45.
+- The attributes table of the coordinate. For longitude, the units are degrees east, and there are 705 values ranging from -25 to 45.
 
-- Inputs to adjust the slicing along the coordinate. For longitude, the default slicing starts at -24.95, stops at 45.45, and has a step of 1. This includes all values in the coordinate array.
+- Inputs to adjust the slicing along the coordinate. For longitude, the default slicing starts at index 0, ends at index 705 (exclusive), and has a step of 1. When using the default render resolution of 128, the step will be 6. The step input is disabled when slicing is determined automatically from the `resolution` argument. Set the `resolution` value less than or equal to 1 to adjust the slice value for each coordinate manually.
 
-- A selection box to assign the coordinate to an axis. These coordinates have already been assigned to each axis automatically.
+- A selection box to assign the coordinate to an axis. These coordinates have already been assigned to each axis automatically, so longitude is assigned to the X axis.
+
 
 ![](../images/6.png)
 
-> **Note:** Each time you change a value in this panel, Pan3D will attempt to make a new render. If you plan on making many changes before you want to re-render, disable the Auto Render feature with the checkbox in the top right. A button will appear when you have made changes that have not been applied. You can click this button to trigger the re-render once you have made all changes. The button displays the total size of the data that will be loaded for the render.
+> **Note:** Each time you change a value in this panel, GeoTrame will attempt to rerender. If you plan on making many changes before you want to rerender, disable the Auto Render feature with the checkbox in the top right. If Auto Render is disabled, a button will appear when you have made changes that have not been applied. You can click this button to trigger the rerender once you have made all changes. The button displays the total size of the data that will be loaded for the render.
 
 > ![](../images/6a.png)
 
-We can crop the rendered mesh and reduce its resolution by adjusting the slicing along these coordinates. After setting the start longitude to 0 and setting the step along longitude to 5, we get the following rendering.
+We can crop the rendered mesh and reduce its resolution by adjusting the slicing along these coordinates. After setting the start index to 200 and setting the stop index to 600, we get the following rendering.
 
 ![](../images/7.png)
 
+Next, let's adjust another coordinate. Collapse the longitude panel and open the time panel. Instead of slicing options, a coordinate assigned to T will show a slider for selecting one time step to display.
 
-We'll put our slicing back to how it was so we can see the full image again. (Set Start to -24.95 and Step 1.) Next, we'll expand the time coordinate and see that the panel is slightly different.
+Note that the time coordinate has 25933 slices. GeoTrame will only load the data for the current time step, so we don't load data that we don't need to render. This means that for each time change, GeoTrame will fetch more data, but each fetch will be much faster than trying to load the whole dataset at once.
 
-Instead of slicing options, the time coordinate has a slider for selecting one time step to display. Note that the time axis for this dataset has 25933 slices. Pan3D will only load the data for the current time step, so we don't load data that we don't need to render. This means that for each time change, Pan3D will fetch more data, but each fetch will be much faster than trying to load the whole dataset at once.
-
-As noted above, the viewer displays the first time step (index 0) by default, which corresponds to 01-January-1950. We can see from the attributes table that the time coordinate range begins with this time and ends with 31-December-2020.
-
-You can pick any index along this slider, and the label above will display the corresponding time step. Below, we have gone forward to 25-June-2004, and Europe appears much warmer.
+GeoTrame displays the first time step (index 0) by default, which corresponds to January 01 1950. We can see from the attributes table that the time coordinate range begins with this time and ends with December 31 2020.
 
 ![](../images/8.png)
 
+You can pick any index along this slider, and the label above will display the corresponding time step. Below, we have gone forward to June 02 2011, and Europe appears much warmer.
+
+![](../images/8a.png)
+
+Data bounds may also be adjusted with the bounds configuration menu in the top left corner of the rendering area. Click the button with the sliders icon to toggle the visibility of this menu. We can close the axis drawer for now.
+
+The bounds configuration menu displays range sliders for each coordinate. These show the changes we made to longitude and time. Try adjusting these sliders and observe how the rendered data changes.
+
+![](../images/8b.png)
+
+When "Interactive Preview" is enabled, a greyscale preview of one face of the data will appear, replacing two of the spatial coordinate sliders. By default, the preview image is of the -Z face, so it replaces the sliders for X and Y.
+
+![](../images/8c.png)
+
+We can now adjust the bounds of the X and Y coordinates by manipulating the red box within the preview image. We can still use the time slider, and updating the time value will trigger an update of the preview image.
+
+![](../images/8d.png)
+
+The bounds configuration menu offers more features for 3D renders when three coordinates are assigned to X, Y, and Z. We'll revisit this panel with another dataset after this.
+
 #### Render configuration
 
-Let's close the data configuration drawers and focus on the rendering area. There are many options to customize the appearance of the rendering within this space.
+Let's reset the bounds and close the data selection drawer to focus on the rendering area. There are many options to customize the appearance of the rendering within this space.
 
-1. We can move the camera around the rendered mesh by clicking and dragging. We can pan the camera by holding Shift while dragging, and we can rotate it (roll) by holding Ctrl while dragging. We can move the camera toward the mesh and away from it by scrolling. We can see this mesh is a plane. We'll look at a 3D dataset soon.
+1. We can move the camera around the rendered mesh by clicking and dragging. We can pan the camera by holding Shift while dragging, and we can roll the camera by holding Ctrl while dragging. We can move the camera toward the mesh and away from it by scrolling. We can see this mesh is a plane. We'll look at a 3D dataset soon.
 
 2. The color legend is also interactive. We can drag it to another edge of the scene, or we can resize it by using the white bounding bars that appear when we click on the legend.
 
     ![](../images/9.png)
 
-3. The circle with the three-dots icon in the top left opens a Views menu. Beside the three-dots icon, there are 12 buttons for you to try.
+3. The button with the three-dots icon in the top left opens a Views menu. Beside the three-dots icon, there are 12 buttons for you to try.
 
     ![](../images/9a.png)
 
@@ -115,32 +137,39 @@ Let's close the data configuration drawers and focus on the rendering area. Ther
     11. A button to save the current visual as a static PNG file.
     12. A button to save the current rendering as an interactive HTML scene.
 
-4. The circle with the gear icon in the top right opens a rendering customization menu. This menu contains four customization options.
+4. The button with the gear icon in the top right opens a rendering customization menu. This menu contains five customization options.
 
     ![](../images/9b.png)
 
     1. A colormap selection box. The default is "viridis". These options come from Matplotlib.
     2. A checkbox to enable transparency. When enabled, another selection box will appear with options for transparency function. The default is "linear".
     3. A checkbox to enable scalar warping. When enabled, scalar warping turns the rendered flat plane into a 3D mesh, where values are extruded in the Z axis according to their magnitudes.
-    4. Inputs to specify the relative scales of each axis. By default, this is a 1:1:1 ratio.
+    4. A checkbox to enable cartographic mode. When enabled, cartographic mode displays the data projected onto an earth sphere. This works best for data with latitude and longitude coordinates.
+    5. Inputs to specify the relative scales of each axis. By default, this is a 1:1:1 ratio.
 
-By using these configuration options, we can get a rendering like the one shown below. For this rendering, we did the following:
+> **Note:** Scalar warping and cartographic mode are mutually exclusive.
 
-- moved the color legend
-- changed the colormap to "plasma"
-- enabled transparency and changed the transparency function to "linear_r" (which means reverse linear)
-- enabled scalar warping
-- changed the axis scale ratio to 2:2:1 so the scalar warping would be less extreme
-- enabled ruler visibility
-- reset the camera to perspective view
+Since we have data with latitude and longitude, enable cartographic mode to see the data on a globe.
 
 ![](../images/10.png)
+
+By using the other configuration options, we can get a rendering like the one shown below. For the following rendering, we do the following:
+
+- move the color legend
+- change the colormap to "plasma"
+- enable transparency and change the transparency function to "linear_r" (which means reverse linear)
+- disable cartographic mode
+- enable scalar warping
+- change the axis scale ratio to 2:2:1 so the scalar warping will be less extreme
+- reset the camera to perspective view
+
+![](../images/10a.png)
 
 Take a moment to try out different combinations to see how else this data can be configured to appear.
 
 #### Saving configurations
 
-The Pan3D viewer is intended to allow scientists to explore a dataset to find ideal visualizations with these many configuration options. Once you have found a visualization you like, you can use the PNG and HTML export options in the Views menu, but you can also export this configuration for fast replication within Pan3D.
+GeoTrame is intended to allow scientists to explore a dataset and find ideal visualizations with these many configuration options. Once you have found a visualization you like, you can use the PNG and HTML export options in the Views menu, but you can also export this configuration for fast replication with GeoTrame or the Pan3D DatasetBuilder.
 
 After we finish our configuration and have a finalized rendering, we can click the "Export" button in the top toolbar. Clicking this button will open a dialog, which asks for a location to save a configuration file.
 
@@ -162,37 +191,23 @@ For our configuration, the contents of the exported file appear as follows:
         "x": "longitude",
         "y": "latitude",
         "t": "time",
-        "t_index": 19899
+        "t_index": 22432
     },
     "data_slices": {
-        "time": [
-            "Jan 01 1950 00:00",
-            "Dec 31 2020 00:00",
-            1
-        ],
-        "latitude": [
-            25.05,
-            71.45,
-            2
-        ],
-        "longitude": [
-            -24.95,
-            45.45,
-            2
-        ]
+        "time": [0, 25932, 1],
+        "latitude": [0, 464, 1],
+        "longitude": [0, 704, 1]
     },
     "ui": {
-        "loading": false,
         "main_drawer": false,
         "axis_drawer": false,
         "unapplied_changes": false,
         "error_message": null,
         "more_info_link": null,
         "expanded_coordinates": [],
-        "current_time_string": "Jun 25 2004 00:00"
     },
     "render": {
-        "auto": false,
+        "auto": true,
         "x_scale": 2,
         "y_scale": 2,
         "z_scale": 1,
@@ -213,20 +228,49 @@ Clicking the "Import" button in the top toolbar will open a similar dialog. Clic
 
 ![](../images/12.png)
 
-Once the file has been selected, another "Import" button will appear. After clicking this button, the dialog will change and Pan3D will begin loading the configuration and applying the changes.
+Once the file has been selected, another "Import" button will appear. After clicking this button, the dialog will change and GeoTrame will begin loading the configuration and applying the changes.
 
 ![](../images/12a.png)
 
-After a moment to load, Pan3D will render the replicated scene.
+After a moment to load, GeoTrame will render the replicated scene.
 
-These configuration files can be used as arguments in the local server startup command (see [Command Line instructions](tutorials/command_line.md) for details) or can be used in a Jupyter notebook environment (see [Jupyter Notebook tutorial](tutorials/jupyter_notebook.md) for details).
+These configuration files can be used as arguments in the local server startup command (see [Command Line instructions](command_line.md) for details) or can be used in a Jupyter notebook environment (see [Jupyter Notebook tutorial](jupyter_notebook.md) for details).
 
 #### Viewing other data
 
 Open the left drawer again and select "xarray" in the Group selection box. The current dataset will be cleared and the Dataset selection box will be populated with seven example datasets from Xarray. You can look at any of these examples from Xarray and try out the configuration options we have reviewed.
 
-There is one dataset among these with 4D data, which means we can select a time slice and get a 3D render. Select "Xarray Examples - ERA-Interim analysis" to experiment with these options on a 3D mesh.
+There is one dataset among these with 4D data, which means we can select a time slice and get a 3D render. Select "Xarray Examples - ERA-Interim analysis" to experiment with GeoTrame features on a 3D mesh. We'll use the array labeled "v", which represents wind velocity in m/s.
 
 ![](../images/13.png)
 
-This concludes the tutorial on how to use the Pan3D viewer.
+As mentioned previously, there is a feature in the bounds configuration menu that is only available for data that has coordinates assigned to X, Y, and Z. More options will be available in the face selection dropdown.
+
+![](../images/14.png)
+
+More specifically, the -Z and +Z faces are available when coordinates are assigned to X and Y, and the preview for Z faces will replace the X and Y range sliders. The -Y and +Y faces are available when coordinates are assigned to X and Z, and the previews will replace the X and Z sliders. The -X and +X faces are available when coordinates are assigned to Y and Z, and the previews will replace the Y and Z sliders.
+
+![](../images/15.png)
+
+We are viewing the -Z face by default, so the X and Y sliders are replaced by the preview image. We can adjust the bounds of X and Y with the red box just like before. Since we also have a coordinate assigned to Z on this dataset, the Z slider is still available.
+
+![](../images/16.png)
+
+Changing the Z bounds will affect what is shown in the preview image; changing the start value will trigger a change in the +Z face preview, and changing the stop value will trigger a change in the -Z face preview. This is indicated by a blue handle on the Z slider.
+
+![](../images/17.png)
+
+You can change the face used for the preview image with the selection box above the preview. If we select +Z, the other handle on the level slider becomes blue.
+
+To orient the selected face towards you, you can click the camera location button next to the face selection box.
+
+![](../images/18.png)
+
+Selecting faces along other axes will change which sliders are visible. Try viewing the preview for other faces, orienting the selected face toward you with the camera button, and adjusting bounds with the red box and sliders.
+
+![](../images/19.png)
+
+This concludes the tutorial on how to use GeoTrame. Now you can try these features on your own data, or use [Catalogs](catalogs.md) to explore more public data.
+
+<!-- Links -->
+[xarray-tutorials-link]: https://docs.xarray.dev/en/stable/generated/xarray.tutorial.open_dataset.html

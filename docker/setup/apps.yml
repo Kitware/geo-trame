@@ -1,2 +1,2 @@
 trame: # Default app under /index.html
-  app: pan3d-viewer
+  app: geotrame

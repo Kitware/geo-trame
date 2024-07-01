@@ -202,7 +202,7 @@ def test_setters_invalid_values():
 
 def test_import_error():
     # This will only succeed in an environment where
-    # pan3d is installed but pan3d[viewer] is not installed.
+    # pan3d is installed but pan3d[geotrame] is not installed.
     builder = DatasetBuilder()
     with pytest.raises(ImportError):
         builder.viewer
